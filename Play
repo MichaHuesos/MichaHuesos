@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пранк</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            background: #000;
+        }
+        #video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <audio id="annoyingSound" loop>
+        <source src="https://www.myinstants.com/media/sounds/trollolol.mp3" type="audio/mpeg">
+    </audio>
+
+    <video id="video" autoplay loop muted>
+        <source src="https://i.imgur.com/3l6vU8v.mp4" type="video/mp4">
+    </video>
+
+    <script>
+        // Максимальная громкость
+        const audio = document.getElementById('annoyingSound');
+        audio.volume = 1.0;
+        audio.play();
+
+        // Полноэкранный режим
+        document.documentElement.requestFullscreen();
+
+        // Предотвращаем закрытие
+        window.addEventListener('beforeunload', (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+
+        // Продолжаем играть звук даже при переключении вкладок
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                audio.play();
+            }
+        });
+
+        // Блокируем попытки выключить звук через DevTools
+        setInterval(() => {
+            if (audio.paused || audio.muted) {
+                audio.play();
+                audio.muted = false;
+                audio.volume = 1.0;
+            }
+        }, 100);
+    </script>
+</body>
+</html>
